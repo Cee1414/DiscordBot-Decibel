@@ -43,8 +43,7 @@ def run_discord_bot():
                         await send_message(message, user_message, is_private=True)
                 else: 
                         await send_message(message, user_message, is_private=False)
-                        return "hi"
-
+                        
 
         client.run(TOKEN)
     
