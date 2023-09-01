@@ -30,7 +30,8 @@ def run_discord_bot():
         yt_dl_opts = {'format': 'bestaudio/best', "noplaylist": "True"}
         ytdl = yt_dlp.YoutubeDL(yt_dl_opts)
 
-        ffmpeg_options = {'options': "-vn"}
+        ffmpeg_options = {"before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
+ "options": "-vn"}
 
         @client.event
         async def on_ready():
@@ -77,7 +78,7 @@ def run_discord_bot():
                                         
                                 if best_audio_format:
                                         audio_url = best_audio_format['url']
-                                        print(best_audio_format)
+                                        
                                         player = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options, executable="/usr/bin/ffmpeg") #may be differnet depending on pc
                                         voice_client.play(player)
                                 
