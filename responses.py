@@ -7,9 +7,8 @@ def handle_response(message) -> str:
     if p_message == "?help":
         return "commands are: "
     
-
-       
-    
+    if p_message.startswith("?play"):
+        return f"Now playing: {p_message.split()[1]}"
 
     
     return "IDK what u said"

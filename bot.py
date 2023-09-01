@@ -2,14 +2,14 @@ import discord
 import os
 import responses
 import asyncio
-import youtube_dl
+import yt_dlp
 
 async def send_message(message, user_message, is_private):
         try:
                 response = responses.handle_response(user_message)
                 await message.author.send(response) if is_private else await message.channel.send(response)
         except Exception as e:
-                print(e)
+                print(f"An error occurred while sending message {e}")
 
 
 def run_discord_bot(): 
@@ -27,8 +27,8 @@ def run_discord_bot():
 
         voice_clients = {}
 
-        yt_dl_opts = {'format': 'bestaudio/best'}
-        ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
+        yt_dl_opts = {'format': 'bestaudio/best', "noplaylist": "True"}
+        ytdl = yt_dlp.YoutubeDL(yt_dl_opts)
 
         ffmpeg_options = {'options': "-vn"}
 
@@ -46,9 +46,13 @@ def run_discord_bot():
                 channel = str(message.channel)
 
                 print(f"{username} said: '{user_message}' ({channel})")
+
                 if user_message == "?help":
                         await send_message(message, user_message, is_private=True)
+                        
                 elif user_message.startswith("?play"):
+                        await send_message(message, user_message, is_private=False)
+
                         try:
                                 url = user_message.split()[1]
 
@@ -58,13 +62,29 @@ def run_discord_bot():
                                 loop = asyncio.get_event_loop()
                                 data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
 
-                                song = data[url]
-                                player = discord.FFmpegPCMAudio(song, **ffmpeg_options, executable="/usr/bin/ffmpeg") #may be differnet depending on pc
+                                if 'is_live' in data and data['is_live']:
+                                        print("Skipping live stream or playlist")
+                                        return
+                                if 'extractor_key' in data and data['extractor_key'] == 'YoutubePlaylist':
+                                        print("Skipping playlist")
+                                        return        
+                                
+                                best_audio_format = None
+                                for fmt in data['formats']:
+                                        if fmt['ext'] in ['mp3', 'm4a', 'aac']:  # Choose audio formats that you support
+                                                best_audio_format = fmt
+                                                break  # Stop after finding the first suitable audio format
+                                        
+                                if best_audio_format:
+                                        audio_url = best_audio_format['url']
+                                        print(best_audio_format)
+                                        player = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options, executable="/usr/bin/ffmpeg") #may be differnet depending on pc
+                                        voice_client.play(player)
+                                
 
-                                voice_client.play(player)
 
                         except Exception as e:
-                                print(e)
+                                print(f"An error occurred while playing audio:  {e}")
                                 
                 else: 
                         await send_message(message, user_message, is_private=False)
