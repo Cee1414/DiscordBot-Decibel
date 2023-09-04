@@ -72,7 +72,29 @@ def run_discord_bot():
                                      
 
                         except Exception as e:
-                                print(f"An error occurred while attempting to disconnect from vc: {e}")                
+                                print(f"An error occurred while attempting to disconnect from vc: {e}")
+
+                elif user_message == "?pause":
+                        
+
+                        try:
+                                
+                                await voice_clients[message.guild.id].pause()
+                                     
+
+                        except Exception as e:
+                                print(f"An error occurred while attempting to pause: {e}")
+
+                elif user_message == "?resume":
+                        
+
+                        try:
+                                
+                                await voice_clients[message.guild.id].resume()
+                                     
+
+                        except Exception as e:
+                                print(f"An error occurred while attempting to resume music: {e}")                                          
         
                 elif user_message.startswith("?play"):
                         await send_message(message, user_message, is_private=False)
