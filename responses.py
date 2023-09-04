@@ -5,10 +5,10 @@ def handle_response(message) -> str:
         return "hey there!"
     
     if p_message == "?help":
-        return "commands are: "
+        return "commands are: ?dc, ?join, ?play? ?stop, hello "
     
     if p_message.startswith("?play"):
         return f"Now playing: {p_message.split()[1]}"
 
     
-    return "IDK what u said"
+    # return "IDK what u said"
