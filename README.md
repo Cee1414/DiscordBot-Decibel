@@ -1,1 +1,1 @@
-# DiscordBot-GPT
+#Decibel-Discord-Bot
