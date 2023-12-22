@@ -1,4 +1,4 @@
-# Discord Bot
+# Decibel
 
 This is a simple Discord bot written in Python using the Discord.py library. The bot has various features, including responding to commands, playing music, and more.
 
