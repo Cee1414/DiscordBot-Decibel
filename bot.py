@@ -13,8 +13,8 @@ async def send_message(message, user_message, is_private):
 
 
 def run_discord_bot(): 
-        file_path = "~/Desktop/keys/DBGPT.txt"         #may be differnet depending on pc
-        expanded_path = os.path.expanduser(file_path)  #may be differnet depending on pc
+        file_path = "~/Desktop/keys/DBGPT.txt"         #may be different depending on pc
+        expanded_path = os.path.expanduser(file_path)  #may be different depending on pc
         tokenVar = open(expanded_path, "r").read().strip()
         
         TOKEN = tokenVar
