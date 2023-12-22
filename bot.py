@@ -121,7 +121,7 @@ def run_discord_bot():
                                 if best_audio_format:
                                         audio_url = best_audio_format['url']
                                         
-                                        player = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options, executable="/usr/bin/ffmpeg") #may be differnet depending on pc
+                                        player = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options, executable="/usr/bin/ffmpeg") #may be different depending on pc
                                         voice_clients[message.guild.id].play(player)
                                 
                         except Exception as e:
